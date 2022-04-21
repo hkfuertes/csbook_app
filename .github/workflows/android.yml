@@ -1,0 +1,54 @@
+# This is a basic workflow to help you get started with Actions
+
+name: android
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
+      - name: Install and set Flutter version
+        uses: subosito/flutter-action@v2.3.0
+        #with:
+        #  flutter-version: '2.5'
+        
+      - name: Restore packages
+        working-directory: ./flutter_app
+        run: flutter pub get
+
+      - name: Build Flutter
+        working-directory: ./flutter_app
+        run: flutter build apk --split-per-abi
+        
+      - name: Pushing Artifacts to Telegram Bot (csbookci)
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: "Build succeeded!"
+          disable_notification: true
+          document: ./flutter_app/build/app/outputs/apk/release/*arm*.apk
+      
+    
+      - name: Upload the artifacts
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          # Artifact name
+          name: release-android
+          # Destination path
+          path: ./flutter_app/build/app/outputs/apk/release/*.apk
+
+
+
