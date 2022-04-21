@@ -1,0 +1,59 @@
+# This is a basic workflow to help you get started with Actions
+
+name: ios
+
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: macos-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
+      - name: Install and set Flutter version
+        uses: subosito/flutter-action@v2.3.0
+        #with:
+        #  flutter-version: '2.5'
+        
+      - name: Restore packages
+        working-directory: ./flutter_app
+        run: flutter pub get
+
+      - name: Build Flutter
+        working-directory: ./flutter_app
+        run: flutter build ios --release --no-codesign
+      
+      - name: Make "Payload" Folder
+        working-directory: ./flutter_app/build/ios/iphoneos
+        run: mkdir Payload
+        
+      - name: Copy runner.app into "Payload" Folder
+        working-directory: ./flutter_app/build/ios/iphoneos
+        run: cp -R ./runner.app ./Payload/
+        
+      #- name: Install Zip
+      #  uses: montudor/action-zip@v1.0.0
+        
+      - name: Generate ZIP/IPA file
+        working-directory: ./flutter_app/build/ios/iphoneos
+        run: zip -r ./csbook.ipa ./Payload
+      
+      - name: Upload the artifacts
+        uses: actions/upload-artifact@v3.0.0
+        with:
+          # Artifact name
+          name: release-ios
+          # Destination path
+          path: ./flutter_app/build/ios/iphoneos/*.ipa
+
+
+
