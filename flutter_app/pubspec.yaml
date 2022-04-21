@@ -1,0 +1,47 @@
+name: csbook
+description: Catholic Song Book App
+
+# Prevent accidental publishing to pub.dev.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  intl:
+  font_awesome_flutter: ^9.2.0
+  shared_preferences: ^2.0.13
+  provider:
+  flutter:
+    sdk: flutter
+  http: ^0.13.4
+  wakelock: ^0.6.1+1
+  json_theme: ^3.3.1
+  perfect_volume_control: ^1.0.5
+
+dev_dependencies:
+  flutter_launcher_icons:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^1.0.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path_android: assets/ic_launcher.png
+  image_path_ios: assets/ios_icon.png
+  adaptive_icon_background: assets/ic_background.png
+  adaptive_icon_foreground: assets/ic_foreground.png
+
+flutter:
+  uses-material-design: true
+
+  # Enable generation of localized Strings from arb files.
+  generate: true
+
+  assets:
+    # Add assets from the images directory to the application.
+    - assets/appainter_theme.json
