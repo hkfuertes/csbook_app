@@ -18,11 +18,11 @@ dependencies:
     sdk: flutter
   http: ^0.13.4
   wakelock: ^0.6.1+1
-  json_theme: ^3.3.1
+  json_theme: ^4.0.0
   perfect_volume_control: ^1.0.5
 
 dev_dependencies:
-  flutter_launcher_icons:
+  flutter_launcher_icons: ^0.9.3
   flutter_test:
     sdk: flutter
 
